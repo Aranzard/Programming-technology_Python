@@ -1,1 +1,62 @@
-# endpoint, параметры, KPI/метрики (черновик), ограничения
+variant_id: '16'
+theme: Землетрясения (USGS) - Япония (Хонсю)
+source_type: usgs_earthquake
+entity:
+  region_id: JP_HON
+  region_name: Япония (Хонсю)
+  bbox:
+    min_lat: 30.0
+    max_lat: 46.0
+    min_lon: 129.0
+    max_lon: 146.0
+  min_magnitude: 4.0
+api:
+  base_url: https://earthquake.usgs.gov/fdsnws/event/1/query
+  method: GET
+  params:
+    format: geojson
+    minmagnitude: 4.0
+    minlatitude: 30.0
+    maxlatitude: 46.0
+    minlongitude: 129.0
+    maxlongitude: 146.0
+  notes: Период задавайте starttime/endtime (например, последние 90 дней).
+normalized_schema:
+- name: event_id
+  type: string
+  desc: ID события (feature.id).
+- name: ts
+  type: timestamp
+  desc: Время события UTC.
+- name: mag
+  type: float
+  desc: Магнитуда.
+- name: place
+  type: string
+  desc: Описание места.
+- name: depth_km
+  type: float
+  desc: Глубина, км.
+- name: lat
+  type: float
+  desc: Широта.
+- name: lon
+  type: float
+  desc: Долгота.
+- name: region_id
+  type: string
+  desc: Регион варианта.
+kpis:
+- Количество событий по дням (cnt_events).
+- Максимальная магнитуда по неделям (max_mag_week).
+- Топ-10 событий по магнитуде с местом и глубиной.
+- Доля 'глубоких' событий depth_km > 70.
+dq_rules:
+- event_id не NULL и уникален.
+- mag в диапазоне [0; 10].
+- depth_km >= 0 (или допустимые значения, если встречаются отрицательные - объяснить).
+- ts не NULL.
+dashboard_questions:
+- Как менялась сейсмическая активность по дням/неделям?
+- Есть ли кластер событий (много событий в 1-2 дня)?
+- Распределение магнитуды (hist) и глубины.
