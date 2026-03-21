@@ -80,12 +80,12 @@ result = fetch_json(
 )
 
 # Создание директории для сохранения
-raw_dir = Path(f"../data/raw/")
+raw_dir = Path(f"../data/raw/variant_16/")
 raw_dir.mkdir(parents=True, exist_ok=True)
 
 # Формирование имени файла
 timestamp = datetime.now(UTC).strftime('%Y-%m-%d_%H-%M-%S')
-output_path = raw_dir / f"variant_{variant}_{timestamp}.json"
+output_path = raw_dir / f"{timestamp}.json"
 
 # Лог в консоль
 print(f"Вариант: {variant}")
