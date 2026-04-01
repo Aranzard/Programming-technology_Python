@@ -1,3 +1,9 @@
 pandas
 pyyaml
 numpy
+sqlalchemy
+psycopg2-binary
+
+pgAdmin
+DBeaver
+psql
