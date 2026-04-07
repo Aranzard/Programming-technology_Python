@@ -58,8 +58,7 @@ def fetch_json(url, params=None, timeout=10):
         }
 
 # Конфигурация
-variant = "16"
-config_path = f"../configs/variant_{variant}.yml"
+config_path = f"configs/variant_16.yml"
 
 # Загрузка конфига
 with open(config_path, 'r', encoding='utf-8') as f:
@@ -88,7 +87,7 @@ timestamp = datetime.now(UTC).strftime('%Y-%m-%d_%H-%M-%S')
 output_path = raw_dir / f"{timestamp}.json"
 
 # Лог в консоль
-print(f"Вариант: {variant}")
+print(f"Вариант: 16")
 print(f"Источник: {config['source_type']}")
 print(f"URL: {result['url']}")
 
