@@ -3,6 +3,7 @@ pyyaml
 numpy
 sqlalchemy
 psycopg2-binary
+pytest
 
 pgAdmin
 DBeaver
