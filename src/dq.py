@@ -1,8 +1,3 @@
-"""
-Data Quality module for earthquake data pipeline.
-Performs automated checks on normalized and mart layers.
-"""
-
 import json
 import pandas as pd
 from pathlib import Path
