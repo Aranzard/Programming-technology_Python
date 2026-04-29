@@ -2,6 +2,7 @@ from pathlib import Path
 import pandas as pd
 from sqlalchemy import create_engine
 
+
 def find_latest_mart_file(mart_dir: Path) -> Path:
     mart_files = list(mart_dir.glob("mart_daily_*.csv"))
     if not mart_files:
@@ -15,7 +16,7 @@ def main():
     mart_path = find_latest_mart_file(mart_dir)
     table_name = "mart_earthquake_jp"
 
-    connection_url = "postgresql+psycopg2://student:student@localhost:5432/analytics"
+    connection_url = "postgresql+psycopg2://student:student_pw@localhost:5432/analytics"
 
     engine = create_engine(connection_url)
 
