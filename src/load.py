@@ -1,36 +1,36 @@
-from pathlib import Path
+import argparse
 import pandas as pd
-from sqlalchemy import create_engine
-
-
-def find_latest_mart_file(mart_dir: Path) -> Path:
-    mart_files = list(mart_dir.glob("mart_daily_*.csv"))
-    if not mart_files:
-        raise FileNotFoundError(f"No mart files found in {mart_dir}")
-    latest = max(mart_files, key=lambda f: f.stat().st_mtime)
-    return latest
-
+from pathlib import Path
+from sqlalchemy import create_engine, text
 
 def main():
-    mart_dir = Path("data/mart/variant_16")
-    mart_path = find_latest_mart_file(mart_dir)
-    table_name = "mart_earthquake_jp"
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--ds", required=True, help="Дата запуска (YYYY-MM-DD)")
+    args = parser.parse_args()
 
-    connection_url = "postgresql+psycopg2://student:student_pw@localhost:5432/analytics"
+    run_date = args.ds
+    mart_path = Path(f'data/mart/variant_16/mart_{run_date}.csv')
 
-    engine = create_engine(connection_url)
+    if not mart_path.exists():
+        print(f'[LOAD] No mart file for {run_date}, skipping')
+        exit(0)
 
-    print(f"[INFO] reading file: {mart_path.resolve()}")
     df = pd.read_csv(mart_path)
+    print(f'[LOAD] mart rows to load for {run_date}: {len(df)}')
 
-    print(f"[INFO] rows={len(df)}, cols={len(df.columns)}")
-    print(f"[INFO] loading to table: {table_name}")
+    engine = create_engine('postgresql+psycopg2://student:student_pw@host.docker.internal:5432/analytics')
 
     with engine.begin() as conn:
-        df.to_sql(table_name, conn, if_exists="replace", index=False)
+        # Удаляем старые данные за этот день
+        conn.execute(text(f"DELETE FROM mart_earthquake_jp WHERE date = '{run_date}'"))
 
-    print("[OK] load finished successfully")
+        # Вставляем новые
+        df.to_sql('mart_earthquake_jp', conn, if_exists='append', index=False)
 
+        # Проверяем результат
+        res = conn.execute(text(f"SELECT COUNT(*) FROM mart_earthquake_jp WHERE date = '{run_date}'"))
+        cnt = res.scalar()
+        print(f'[LOAD] loaded {cnt} rows for {run_date}')
 
 if __name__ == "__main__":
     main()
