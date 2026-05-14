@@ -44,6 +44,7 @@ services:
     image: apache/airflow:2.10.0
     environment:
       AIRFLOW__API__SECRET_KEY: 'my-secret-key-2026'
+      AIRFLOW__WEBSERVER__SECRET_KEY: my-super-secret-key-2026
       AIRFLOW__CORE__EXECUTOR: LocalExecutor
       AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres_airflow:5432/airflow
       AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'true'
@@ -66,6 +67,7 @@ services:
     image: apache/airflow:2.10.0
     environment:
       AIRFLOW__API__SECRET_KEY: 'my-secret-key-2026'
+      AIRFLOW__WEBSERVER__SECRET_KEY: my-super-secret-key-2026
       AIRFLOW__CORE__EXECUTOR: LocalExecutor
       AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres_airflow:5432/airflow
       AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'true'
@@ -86,6 +88,7 @@ services:
     image: apache/airflow:2.10.0
     environment:
       AIRFLOW__API__SECRET_KEY: 'my-secret-key-2026'
+      AIRFLOW__WEBSERVER__SECRET_KEY: my-super-secret-key-2026
       AIRFLOW__CORE__EXECUTOR: LocalExecutor
       AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres_airflow:5432/airflow
       AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'true'
